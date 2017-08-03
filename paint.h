@@ -4,6 +4,10 @@
 #include <QWidget>
 #include <QTimer>
 #include <QResizeEvent>
+#include <QWidget>
+#include <QPushButton>
+#include <QSpinBox>
+#include <QLabel>
 
 #include <paintscene.h>
 
@@ -16,8 +20,14 @@ class Paint : public QWidget
     Q_OBJECT
 
 public:
+    QPushButton *button;
+    QSpinBox *inputA;
+    QSpinBox *inputB;
+    QLabel *result;
+
     explicit Paint(QWidget *parent = 0);
     ~Paint();
+    void printOk();
 
 private:
     Ui::Paint *ui;

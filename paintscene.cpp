@@ -1,37 +1,51 @@
 #include "paintscene.h"
-#include <QPushButton>
-#include <iostream>
-#include <QString>
+#include "paint.h"
+paintScene::paintScene(QObject *parent) : QGraphicsScene(parent)
+{
 
-#include <QPainter>
-#include <QPen>
-#include <QColor>
-#include <QMouseEvent>
+}
 
-paintScene::paintScene(QObject *parent) : QGraphicsScene(parent){}
-paintScene::~paintScene(){}
+paintScene::~paintScene()
+{
+
+}
 
 void paintScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
+    //int r = inputB->value();
+    double r=1;
     // При нажатии кнопки мыши отрисовываем эллипс
-    addEllipse(event->scenePos().x() - 5,
-               event->scenePos().y() - 5,
-               10,
-               10,
+    addEllipse(event->scenePos().x() - r,
+               event->scenePos().y() - r,
+               r*2,
+               r*2,
                QPen(Qt::NoPen),
-               QBrush(Qt::green));
+               QBrush(Qt::blue));
     // Сохраняем координаты точки нажатия
     previousPoint = event->scenePos();
 }
 
 void paintScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
+
     // Отрисовываем линии с использованием предыдущей координаты
     addLine(previousPoint.x(),
             previousPoint.y(),
             event->scenePos().x(),
             event->scenePos().y(),
-            QPen(Qt::green,10,Qt::SolidLine,Qt::RoundCap));
+            QPen(Qt::blue,r*2,Qt::SolidLine,Qt::RoundCap));
     // Обновляем данные о предыдущей координате
     previousPoint = event->scenePos();
 }
+void Paint::printOk()
+{
+//    cout << "Hello world!\n";
+//    cout.flush();
+    int a = inputA->value();
+    int b = inputB->value();
+    int c = a + b;
+    result->setText(QString::asprintf("%d", c));
+    result->resize(result->sizeHint());
+}
+
+

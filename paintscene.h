@@ -6,31 +6,24 @@
 #include <QTimer>
 #include <QDebug>
 
-#include <QWidget>
-#include <QPushButton>
-#include <QSpinBox>
-#include <QLabel>
-
-#include <vector>//
 class paintScene : public QGraphicsScene
 {
-
     Q_OBJECT
 
 public:
+    double r=5;
     explicit paintScene(QObject *parent = 0);
     ~paintScene();
-
+public slots:
+    //double r=5;
 private:
     QPointF     previousPoint;      // Координаты предыдущей точки
 
 private:
     // Для рисования используем события мыши
     void mousePressEvent(QGraphicsSceneMouseEvent * event);
-
     void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
 
 };
-
 
 #endif // PAINTSCENE_H
