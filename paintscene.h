@@ -11,11 +11,11 @@ class paintScene : public QGraphicsScene
     Q_OBJECT
 
 public:
-    double r=5;
+    double r;
     explicit paintScene(QObject *parent = 0);
     ~paintScene();
 public slots:
-    //double r=5;
+
 private:
     QPointF     previousPoint;      // Координаты предыдущей точки
 
