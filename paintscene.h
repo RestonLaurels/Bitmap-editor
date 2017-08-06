@@ -1,6 +1,7 @@
 #ifndef PAINTSCENE_H
 #define PAINTSCENE_H
 
+#include <QPixmap>
 #include <QGraphicsScene>
 #include <QGraphicsSceneMouseEvent>
 #include <QTimer>

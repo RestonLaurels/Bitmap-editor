@@ -5,10 +5,14 @@
 #include <iostream>
 #include <QString>
 #include <QPen>
+#include <QLineEdit>
+#include <QPixmap>
+
 Paint::Paint(QWidget *parent) :QWidget(parent), ui(new Ui::Paint)
 
 {
     button = new QPushButton(this);
+    button->setMaximumWidth(70);
     button->setText("Карандаш");
     button->move(0, 120); // Координаты относительно виджета, в который вложен button.
     QObject:connect(button, &QPushButton::clicked,this, &Paint::pencil);
@@ -24,6 +28,12 @@ Paint::Paint(QWidget *parent) :QWidget(parent), ui(new Ui::Paint)
     inputA->setMaximum(50.0);
     inputA->setMinimum(0.5);
     //
+    //линия для загрузки и сохранения
+    specialline = new QLineEdit(this);
+    specialline->move(0,200);
+    specialline->setMaximumWidth(80);
+    specialline->setText("D:/");
+
     //Цвет из градиента
     {
         hardcolorbutton = new QPushButton(this);
@@ -48,12 +58,20 @@ Paint::Paint(QWidget *parent) :QWidget(parent), ui(new Ui::Paint)
         connect(hardcolorbutton, &QPushButton::clicked,this, &Paint::hardcolor);
 
     }
+    //загрузка
 
+    {
+    loadbutton = new QPushButton(this);
+    loadbutton->setText("load from");
+    loadbutton->move(4,120);
+    loadbutton->setMaximumWidth(80);
+    connect(loadbutton, &QPushButton::clicked,this,&Paint::load);
+    }
     //сохранение
     {
     savebutton = new QPushButton(this);
-    savebutton->setText("сохранить");
-    savebutton->move(4,150);
+    savebutton->setText("save to");
+    savebutton->move(4,180);
     savebutton->setMaximumWidth(80);
     connect(savebutton, &QPushButton::clicked,this, &Paint::save);
     }
@@ -67,7 +85,7 @@ Paint::Paint(QWidget *parent) :QWidget(parent), ui(new Ui::Paint)
     eraserbutton->setText("Стерка");
     }
 
-
+    {
         //красный
     {
     redbutton = new QPushButton(this);
@@ -240,7 +258,7 @@ Paint::Paint(QWidget *parent) :QWidget(parent), ui(new Ui::Paint)
                     "background-color: rgb(40,40,40); } "
                     );
     }
-
+    }
     ui->setupUi(this);
     scene = new paintScene();       // Инициализируем графическую сцену
 
@@ -260,7 +278,7 @@ void Paint::slotTimer()
 {
     // Переопределяем размеры графической сцены в зависимости от размеров окна
     timer->stop();
-    scene->setSceneRect(0,0, ui->graphicsView->width()-20, ui->graphicsView->height() -20);
+    scene->setSceneRect(15,15, ui->graphicsView->width()-20, ui->graphicsView->height()-20);
 }
 void Paint::resizeEvent(QResizeEvent *event)
 {
@@ -348,26 +366,18 @@ void Paint::hardcolor()
     scene->color.setRgb(r,g,b,scene->transparency);
     scene->r = inputA->value();
 
-    /*
-    hardcolorbutton->setStyleSheet(
-                    "QPushButton{"
-                    "background-color: rgb(redgrad->value, 0, 0);"
-                    "border-radius: 4px transparent;"
-                    "border-bottom: 3px transparent;"
-                    "border-right: 2px transparent;"
-                    "border-left: 2px transparent;}"
-                    "QPushButton:hover{"
-                    "background-color: rgb(250,0,0);} "
-                    "QPushButton:pressed  {"
-                    "background-color: rgb(200,0,0); } "
-                    );
-    */
 }
 
 void Paint::save(){
-
     QImage image(scene->width(), scene->height(), QImage::Format_ARGB32_Premultiplied);
     QPainter painter(&image);
+    //image.fill(NULL);
     scene->render(&painter);
-    image.save("D:/result.png");
+    image.save(specialline->text());
+}
+void Paint::load(){
+    QPixmap painter;
+    painter.load(specialline->text());
+    scene->addPixmap(painter);
+
 }

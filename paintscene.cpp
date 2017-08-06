@@ -2,6 +2,8 @@
 #include "paint.h"
 #include <QPainter>
 #include <QPen>
+#include <QLineEdit>
+#include <QPixmap>
 paintScene::paintScene(QObject *parent) : QGraphicsScene(parent)
 {
 
@@ -102,3 +104,4 @@ void paintScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
         case 2:{}
     }
 }
+

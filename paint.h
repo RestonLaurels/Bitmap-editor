@@ -1,6 +1,7 @@
 #ifndef PAINT_H
 #define PAINT_H
 
+#include <QPixmap>
 #include <QWidget>
 #include <QTimer>
 #include <QResizeEvent>
@@ -10,6 +11,7 @@
 #include <QLabel>
 #include <QPainter>
 #include <QPen>
+#include <QLineEdit>
 
 #include <paintscene.h>
 
@@ -35,10 +37,13 @@ public:
     QPushButton *purpurebutton;
     QPushButton *greybutton;
     QPushButton *blackbutton;
+
     QPushButton *savebutton;
+    QPushButton *loadbutton;
+
     QPushButton *eraserbutton;
 
-    //QPushButton *coolcolour;
+    QLineEdit *specialline;
 
     QSpinBox *redgrad;
     QSpinBox *bluegrad;
@@ -69,6 +74,7 @@ public:
     void purpure();
 
     void save();
+    void load();
 private:
     Ui::Paint *ui;
     QTimer *timer;      // Определяем таймер для подготовки актуальных размеро граф. сцены
