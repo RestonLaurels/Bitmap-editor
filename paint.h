@@ -8,6 +8,8 @@
 #include <QPushButton>
 #include <QSpinBox>
 #include <QLabel>
+#include <QPainter>
+#include <QPen>
 
 #include <paintscene.h>
 
@@ -21,25 +23,59 @@ class Paint : public QWidget
 
 public:
     QPushButton *button;
-    QSpinBox *inputA;
-    QSpinBox *inputB;
-    QLabel *result;
+
+    QPushButton *fillbutton;
+
+    QPushButton *redbutton;
+    QPushButton *orangebutton;
+    QPushButton *yellowbutton;
+    QPushButton *greenbutton;
+    QPushButton *lbluebutton;
+    QPushButton *bluebutton;
+    QPushButton *purpurebutton;
+    QPushButton *greybutton;
+    QPushButton *blackbutton;
+    QPushButton *savebutton;
+    QPushButton *eraserbutton;
+
+    //QPushButton *coolcolour;
+
+    QSpinBox *redgrad;
+    QSpinBox *bluegrad;
+    QSpinBox *greengrad;
+    QPushButton *hardcolorbutton;
+
+    QDoubleSpinBox *inputA;
+    //QLabel *result;
 
     explicit Paint(QWidget *parent = 0);
     ~Paint();
-    void printOk();
+    void pencil();
+    void fill();
 
+    void red();
+    void blue();
+    void lblue();
+    void orange();
+
+    void grey();
+    void black();
+    void green();
+    void yellow();
+
+    void eras();
+    void hardcolor();
+
+    void purpure();
+
+    void save();
 private:
     Ui::Paint *ui;
-    QTimer *timer;      /* Определяем таймер для подготовки актуальных размеров
-                         * графической сцены
-                         * */
+    QTimer *timer;      // Определяем таймер для подготовки актуальных размеро граф. сцены
     paintScene *scene;  // Объявляем кастомную графическую сцену
 
 private:
-    /* Переопределяем событие изменения размера окна
-     * для пересчёта размеров графической сцены
-     * */
+    // Переопределяем событие изменения размера окна
     void resizeEvent(QResizeEvent * event);
 
 private slots:

@@ -1,5 +1,6 @@
 #include "paint.h"
 #include <QApplication>
+#include <QPainter>
 
 int main(int argc, char *argv[])
 {

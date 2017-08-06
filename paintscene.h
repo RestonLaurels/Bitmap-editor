@@ -5,15 +5,29 @@
 #include <QGraphicsSceneMouseEvent>
 #include <QTimer>
 #include <QDebug>
-
+#include <QPainter>
+#include <QPen>
+#include <QPainter>
+#include <QPen>
+#include <QColor>
+#include <QMouseEvent>
 class paintScene : public QGraphicsScene
 {
     Q_OBJECT
 
 public:
-    double r;
+
+    //QColor p;
+    QColor color;
+    int transparency=255;
+    double r = 0.5;
+    int lever = 0;
+    int style=0;
+
     explicit paintScene(QObject *parent = 0);
     ~paintScene();
+
+    void filling();
 public slots:
 
 private:
