@@ -7,6 +7,7 @@
 #include <QPen>
 #include <QLineEdit>
 #include <QPixmap>
+#include <QRgb>
 
 Paint::Paint(QWidget *parent) :QWidget(parent), ui(new Ui::Paint)
 
@@ -32,7 +33,7 @@ Paint::Paint(QWidget *parent) :QWidget(parent), ui(new Ui::Paint)
     specialline = new QLineEdit(this);
     specialline->move(0,200);
     specialline->setMaximumWidth(80);
-    specialline->setText("D:/");
+    specialline->setText("D:/Project/Wii/test/");
 
     //Цвет из градиента
     {
@@ -45,16 +46,20 @@ Paint::Paint(QWidget *parent) :QWidget(parent), ui(new Ui::Paint)
         redgrad->setMaximum(255);
         redgrad->setMaximumWidth(40);
         redgrad->move(300,5);
+        redgrad->setValue(128);
 
         bluegrad = new QSpinBox(this);
         bluegrad->setMaximum(255);
         bluegrad->setMaximumWidth(40);
         bluegrad->move(340,5);
+        bluegrad->setValue(128);
 
         greengrad = new QSpinBox(this);
         greengrad->setMaximum(255);
         greengrad->setMaximumWidth(40);
         greengrad->move(380,5);
+        greengrad->setValue(128);
+
         connect(hardcolorbutton, &QPushButton::clicked,this, &Paint::hardcolor);
 
     }
@@ -63,7 +68,7 @@ Paint::Paint(QWidget *parent) :QWidget(parent), ui(new Ui::Paint)
     {
     loadbutton = new QPushButton(this);
     loadbutton->setText("load from");
-    loadbutton->move(4,120);
+    loadbutton->move(4,240);
     loadbutton->setMaximumWidth(80);
     connect(loadbutton, &QPushButton::clicked,this,&Paint::load);
     }
@@ -263,7 +268,7 @@ Paint::Paint(QWidget *parent) :QWidget(parent), ui(new Ui::Paint)
     scene = new paintScene();       // Инициализируем графическую сцену
 
     ui->graphicsView->setScene(scene);  // Устанавливаем графическую сцену
-
+    //autoFillBackground : 1;
     timer = new QTimer();       // Инициализируем таймер
     connect(timer, &QTimer::timeout, this, &Paint::slotTimer);
     timer->start(50);          // Запускаем таймер
@@ -344,7 +349,7 @@ void Paint::black()
 {
     scene->lever = 8;
     scene->r = inputA->value();
-    scene->color.setRgb(0,0,0,scene->transparency);
+    scene->color.setRgb(1,1,1,scene->transparency);
 }
 void Paint::grey()
 {
@@ -372,7 +377,23 @@ void Paint::save(){
     QImage image(scene->width(), scene->height(), QImage::Format_ARGB32_Premultiplied);
     QPainter painter(&image);
     //image.fill(NULL);
+    QColor col;
+    QRgb rgb;
+    rgb = qRgb(255,255,255);
+    col.setRgb(0,0,0,255);
     scene->render(&painter);
+
+    for (int x=0; x<=scene->width(); x++){
+        for (int y=0; y<=scene->height();y++){
+
+            if (QColor(image.pixel(x,y))==col){
+               image.setPixel(x,y,rgb);
+
+            }
+
+        }
+    }
+
     image.save(specialline->text());
 }
 void Paint::load(){

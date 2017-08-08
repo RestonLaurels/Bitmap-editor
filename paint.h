@@ -1,6 +1,7 @@
 #ifndef PAINT_H
 #define PAINT_H
 
+#include <QRgb>
 #include <QPixmap>
 #include <QWidget>
 #include <QTimer>
