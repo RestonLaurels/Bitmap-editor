@@ -1,17 +1,21 @@
-#ifndef ELLIPS_H
-#define ELLIPS_H
+#ifndef TRIANGLE_H
+#define TRIANGLE_H
 
-#include <QWidget>
+#include <QObject>
+#include <QGraphicsItem>
+#include "figure.h"
 
-class ellips : public QWidget
+class Ellips : public Figure
 {
     Q_OBJECT
+
 public:
-    explicit ellips(QWidget *parent = 0);
 
-signals:
+    explicit Ellips(QPointF point, QObject *parent = 0);
+    ~Triangle();
 
-public slots:
+private:
+    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 };
 
 #endif // ELLIPS_H
