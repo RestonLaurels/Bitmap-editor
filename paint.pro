@@ -14,9 +14,19 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         paint.cpp \
-    paintscene.cpp
+    paintscene.cpp \
+    figure.cpp \
+    romb.cpp \
+    square.cpp \
+    triangle.cpp \
+    ellips.cpp
 
 HEADERS  += paint.h \
-    paintscene.h
+    paintscene.h \
+    figure.h \
+    romb.h \
+    square.h \
+    triangle.h \
+    ellips.h
 
 FORMS    += paint.ui

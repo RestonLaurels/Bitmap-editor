@@ -1,6 +1,8 @@
 #ifndef PAINTSCENE_H
 #define PAINTSCENE_H
 
+#include "figure.h"
+
 #include <QRgb>
 #include <QPixmap>
 #include <QGraphicsScene>
@@ -20,6 +22,10 @@
 class paintScene : public QGraphicsScene
 {
     Q_OBJECT
+    //Свойство текущего типа используемой фигуры
+    Q_PROPERTY(int typeFigure
+               READ typeFigure WRITE setTypeFigure
+               NOTIFY typeFigureChanged)
 
 public:
 
@@ -35,10 +41,28 @@ public:
     ~paintScene();
 
     void filling(int x, int y, QColor specialcol,QColor color,QImage *image);
+    //void filling(int x, int y, QRgb oldcolor,QRgb newcolor, QImage & image);
     //void Fill2(QRgb oldColor, QRgb newColor, int x, int y);
+
+    int typeFigure() const;                 // Возвращение текщего типа
+    void setTypeFigure(const int type);     // Установка текущего типа
+
+    // Перечисление типов используемых фигур
+    enum FigureTypes {
+        SquareType,
+        RombType,
+        TriangleType
+    };
+signals:
+    void typeFigureChanged();
+
 public slots:
 
 private:
+
+    Figure *tempFigure;
+    int m_typeFigure;   // текущий тип фигуры
+
     QPointF     previousPoint;      // Координаты предыдущей точки
 
 private:

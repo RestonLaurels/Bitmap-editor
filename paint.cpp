@@ -12,11 +12,38 @@
 Paint::Paint(QWidget *parent) :QWidget(parent), ui(new Ui::Paint)
 
 {
+    rombbutton = new QPushButton (this);
+    rombbutton->setMaximumWidth(70);
+    rombbutton->setText("Romb");
+    rombbutton->move(0, 300);
+    connect(rombbutton, &QPushButton::clicked,this, &Paint::romb);
+
+
+    trianglebutton = new QPushButton(this);
+    trianglebutton->setMaximumWidth(70);
+    trianglebutton->setText("Triangle");
+    trianglebutton->move(0, 330);
+    connect(trianglebutton, &QPushButton::clicked,this, &Paint::triangle);
+
+
+    ellipsbutton = new QPushButton (this);
+    ellipsbutton->setMaximumWidth(70);
+    ellipsbutton->setText("Ellips");
+    ellipsbutton->move(0, 360);
+    connect(ellipsbutton, &QPushButton::clicked,this, &Paint::ellips);
+
+
+    squarebutton = new QPushButton (this);
+    squarebutton->setMaximumWidth(70);
+    squarebutton->setText("Square");
+    squarebutton->move(0, 390);
+    connect(squarebutton, &QPushButton::clicked,this, &Paint::square);
+
     button = new QPushButton(this);
     button->setMaximumWidth(70);
     button->setText("Карандаш");
     button->move(0, 120); // Координаты относительно виджета, в который вложен button.
-    QObject:connect(button, &QPushButton::clicked,this, &Paint::pencil);
+    connect(button, &QPushButton::clicked,this, &Paint::pencil);
 
     fillbutton = new QPushButton(this);
     fillbutton->setText("Заливка");
@@ -308,6 +335,7 @@ void Paint::red()
     scene->lever = 1;
     scene->r = inputA->value();
     scene->color.setRgb(250,0,0,scene->transparency);
+
 }
 void Paint::orange()
 {
@@ -402,3 +430,30 @@ void Paint::load(){
     scene->addPixmap(painter);
 
 }
+
+void Paint::square(){
+    scene->style=2;
+    scene->setTypeFigure(paintScene::SquareType);
+    scene->r=inputA->value();
+}
+void Paint::ellips(){
+    scene->style=2;
+    scene->setTypeFigure(paintScene::RombType);
+    scene->r=inputA->value();
+}
+void Paint::triangle(){
+    scene->style=2;
+    scene->setTypeFigure(paintScene::TriangleType);
+
+    scene->r=inputA->value();
+
+}
+void Paint::romb(){
+    scene->style=2;
+    scene->setTypeFigure(paintScene::RombType);
+    scene->r=inputA->value();
+
+}
+
+
+

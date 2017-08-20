@@ -1,6 +1,6 @@
 #ifndef PAINT_H
 #define PAINT_H
-
+#include <QMainWindow>
 #include <QRgb>
 #include <QPixmap>
 #include <QWidget>
@@ -13,6 +13,7 @@
 #include <QPainter>
 #include <QPen>
 #include <QLineEdit>
+#include <QPainter>
 
 #include <paintscene.h>
 
@@ -51,11 +52,24 @@ public:
     QSpinBox *greengrad;
     QPushButton *hardcolorbutton;
 
+    QPushButton *trianglebutton;
+    QPushButton *rombbutton;
+    QPushButton *squarebutton;
+    QPushButton *ellipsbutton;
+
+
+
     QDoubleSpinBox *inputA;
     //QLabel *result;
 
     explicit Paint(QWidget *parent = 0);
     ~Paint();
+    void romb();
+    void square();
+    void ellips();
+    void triangle();
+
+
     void pencil();
     void fill();
 
@@ -87,6 +101,9 @@ private:
 
 private slots:
     void slotTimer();
+    //void on_pushButton_clicked();       // Включаем отрисовку Ромба
+   //void on_pushButton_2_clicked();     // Включаем отрисовку Квадрата
+   //void on_pushButton_3_clicked();     // Включаем отрисовку Треугольника
 };
 
 #endif // PAINT_H
