@@ -11,6 +11,7 @@
 #include "romb.h"
 #include "triangle.h"
 #include "square.h"
+#include "ellips.h"
 
 paintScene::paintScene(QObject *parent) : QGraphicsScene(parent)
 {
@@ -36,7 +37,7 @@ void paintScene::setTypeFigure(const int type)
 void paintScene::filling(int x, int y, QColor specialcolor,QColor color, QImage *image)
 {
 
-    if (color==specialcolor) return;//если цвет, которым мы закрашиваем совпадает с тем, который сейчас установлен, то уходим
+    if (color!=specialcolor) return;//если цвет, которым мы закрашиваем совпадает с тем, который сейчас установлен, то уходим
 
 
     if ((x>=0)&&(y>=0)){ //если мы находимся в картине
@@ -125,10 +126,10 @@ void paintScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
                         QBrush(color));
         // Сохраняем координаты точки нажатия
             previousPoint = event->scenePos();
+            break;
         }
         case 1:
         {
-            if(style==1){
                 double x = event->scenePos().x(),
                        y = event->scenePos().y();
                 QImage image(width(), height(), QImage::Format_RGB32);
@@ -137,8 +138,12 @@ void paintScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
                 QColor specialcol;
 
 
+                painter.setRenderHint(QPainter::Antialiasing);
+
+                render(&painter);
                 //запомнили цвет пикселя на котором стоим
                 specialcol = QColor(image.pixel(x,y));
+                //color=specialcol;
                 //переходим к циклу закрашивания
                 //paintScene::filling(x,y,specialcol.rgb(),color.rgb(), image);
                 paintScene::filling(x,y,specialcol,color, &image);
@@ -148,11 +153,10 @@ void paintScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
                 //addPixmap(image);
                 //addPixmap(image);
                 //QPainter().drawImage(0, 0, image);
-
-            }
             break;
+
         }
-        case 2:
+        case 2:{
             switch (m_typeFigure) {
 
             case SquareType: {
@@ -179,25 +183,23 @@ void paintScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
                 tempFigure = item;
                 break;
             }
-            /*
-            default:{
-                Square *item = new Square(event->scenePos());
+
+            case EllipsType:{
+                ellips *item = new ellips(event->scenePos());
+                item->color=color;
                 item->setPos(event->pos());
+
                 tempFigure = item;
                 break;
             }
-            */
-          }
-          this->addItem(tempFigure);
+            }
+            this->addItem(tempFigure);
+            break;
         }
     }
+}
 void paintScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
-    //const QColour ue";
-    //QBrush p;
-    //p.setColor(Qt::green);
-    //p.setRgbF(255,255,255,1.0);
-    // Отрисовываем линии с использованием предыдущей координаты
     switch(style){
 
         case 0:
@@ -210,23 +212,21 @@ void paintScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 
         // Обновляем данные о предыдущей координате
         previousPoint = event->scenePos();
+        break;
         }
-        break;
         case 1:
-        break;
         case 2:{
             /* Устанавливаем конечную координату положения мыши
             * в текущую отрисовываемую фигуру
             * */
             tempFigure->setEndPoint(event->scenePos());
-            /* Обновляем содержимое сцены,
-            * необходимо для устранения артефактов при отрисовке фигур
-            * */
-            this->update(QRectF(0,0,this->width(), this->height()));
+            // Обновляем содержимое сцены, необходимо для устранения артефактов при отрисовке фигур
 
+            this->update(QRectF(0,0,this->width(), this->height()));
+            break;
 
         }
-        break;
+
     }
 }
 

@@ -101,9 +101,6 @@ private:
 
 private slots:
     void slotTimer();
-    //void on_pushButton_clicked();       // Включаем отрисовку Ромба
-   //void on_pushButton_2_clicked();     // Включаем отрисовку Квадрата
-   //void on_pushButton_3_clicked();     // Включаем отрисовку Треугольника
 };
 
 #endif // PAINT_H

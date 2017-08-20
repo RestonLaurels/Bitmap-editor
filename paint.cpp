@@ -438,7 +438,7 @@ void Paint::square(){
 }
 void Paint::ellips(){
     scene->style=2;
-    scene->setTypeFigure(paintScene::RombType);
+    scene->setTypeFigure(paintScene::EllipsType);
     scene->r=inputA->value();
 }
 void Paint::triangle(){

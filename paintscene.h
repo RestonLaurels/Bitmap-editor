@@ -51,7 +51,8 @@ public:
     enum FigureTypes {
         SquareType,
         RombType,
-        TriangleType
+        TriangleType,
+        EllipsType
     };
 signals:
     void typeFigureChanged();

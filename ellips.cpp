@@ -1,34 +1,30 @@
-#include "triangle.h"
+#include "ellips.h"
 #include <QPainter>
 #include <paintscene.h>
 
-Triangle::Triangle(QPointF point, QObject *parent) :
+ellips::ellips(QPointF point, QObject *parent) :
     Figure(point,parent)
 {
     Q_UNUSED(point)
 }
 
-Triangle::~Triangle()
+ellips::~ellips()
 {
 
 }
 
-// Реализуем метод отрисовки
-void Triangle::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+void ellips::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
+
     painter->setPen(QPen(QBrush(color), 2));
 
-    QPolygonF polygon;
+    QRectF ellip(endPoint().x() > startPoint().x() ? startPoint().x() : endPoint().x(),
+                endPoint().y() > startPoint().y() ? startPoint().y() : endPoint().y(),
+                qAbs(endPoint().x() - startPoint().x()),
+                qAbs(endPoint().y() - startPoint().y()));
 
-    polygon << QPointF(startPoint().x() + (endPoint().x() > startPoint().x() ? + 1 : - 1)*
-                           abs((endPoint().x() - startPoint().x())/2), startPoint().y())
-                << QPointF((endPoint().x() > startPoint().x()) ? endPoint().x() : startPoint().x(),
-                           endPoint().y())
-                << QPointF((endPoint().x() > startPoint().x()) ? startPoint().x() : endPoint().x(),
-                           endPoint().y());
 
-    painter->drawPolygon(polygon);
-
+    painter->drawEllipse(ellip);
     Q_UNUSED(option)
     Q_UNUSED(widget)
 }
