@@ -13,78 +13,85 @@ Paint::Paint(QWidget *parent) :QWidget(parent), ui(new Ui::Paint)
 
 {
     rombbutton = new QPushButton (this);
-    rombbutton->setMaximumWidth(70);
+    rombbutton->setMaximumWidth(45);
     rombbutton->setText("Romb");
-    rombbutton->move(0, 300);
+    rombbutton->move(255, 35);
     connect(rombbutton, &QPushButton::clicked,this, &Paint::romb);
 
 
     trianglebutton = new QPushButton(this);
-    trianglebutton->setMaximumWidth(70);
+    trianglebutton->setMaximumWidth(45);
     trianglebutton->setText("Triangle");
-    trianglebutton->move(0, 330);
+    trianglebutton->move(300, 35);
     connect(trianglebutton, &QPushButton::clicked,this, &Paint::triangle);
 
 
     ellipsbutton = new QPushButton (this);
-    ellipsbutton->setMaximumWidth(70);
+    ellipsbutton->setMaximumWidth(45);
     ellipsbutton->setText("Ellips");
-    ellipsbutton->move(0, 360);
+    ellipsbutton->move(345, 35);
     connect(ellipsbutton, &QPushButton::clicked,this, &Paint::ellips);
 
 
     squarebutton = new QPushButton (this);
-    squarebutton->setMaximumWidth(70);
+    squarebutton->setMaximumWidth(57);
     squarebutton->setText("Square");
-    squarebutton->move(0, 390);
+    squarebutton->move(390, 35);
     connect(squarebutton, &QPushButton::clicked,this, &Paint::square);
 
     button = new QPushButton(this);
     button->setMaximumWidth(70);
-    button->setText("Карандаш");
-    button->move(0, 120); // Координаты относительно виджета, в который вложен button.
+    button->setText("Кисть");
+    button->move(0, 100); // Координаты относительно виджета, в который вложен button.
     connect(button, &QPushButton::clicked,this, &Paint::pencil);
 
     fillbutton = new QPushButton(this);
     fillbutton->setText("Заливка");
-    fillbutton->move(0, 150);
+    fillbutton->move(0, 130);
+    fillbutton->setMaximumWidth(70);
     connect(fillbutton, &QPushButton::clicked,this, &Paint::fill);
 
     //толщина маркера
     inputA = new QDoubleSpinBox(this);
-    inputA->move(4, 40);
+    inputA->move(5, 70);
+    inputA->setMaximumWidth(50);
     inputA->setMaximum(50.0);
     inputA->setMinimum(0.5);
     //
     //линия для загрузки и сохранения
     specialline = new QLineEdit(this);
-    specialline->move(0,200);
-    specialline->setMaximumWidth(80);
+    specialline->move(5,5);
+    specialline->setMinimumWidth(160);
     specialline->setText("D:/Project/Wii/test/");
+
+    loadline = new QLineEdit(this);
+    loadline->move(5,35);
+    loadline->setMinimumWidth(160);
+    loadline->setText("D:/");
 
     //Цвет из градиента
     {
         hardcolorbutton = new QPushButton(this);
-        hardcolorbutton->move(420,5);
+        hardcolorbutton->move(570,5);
         hardcolorbutton->setMaximumWidth(30);
         hardcolorbutton->setText("RGB");
         //hardcolorbutton
         redgrad = new QSpinBox(this);
         redgrad->setMaximum(255);
         redgrad->setMaximumWidth(40);
-        redgrad->move(300,5);
+        redgrad->move(450,5);
         redgrad->setValue(128);
 
         bluegrad = new QSpinBox(this);
         bluegrad->setMaximum(255);
         bluegrad->setMaximumWidth(40);
-        bluegrad->move(340,5);
+        bluegrad->move(490,5);
         bluegrad->setValue(128);
 
         greengrad = new QSpinBox(this);
         greengrad->setMaximum(255);
         greengrad->setMaximumWidth(40);
-        greengrad->move(380,5);
+        greengrad->move(530,5);
         greengrad->setValue(128);
 
         connect(hardcolorbutton, &QPushButton::clicked,this, &Paint::hardcolor);
@@ -95,7 +102,7 @@ Paint::Paint(QWidget *parent) :QWidget(parent), ui(new Ui::Paint)
     {
     loadbutton = new QPushButton(this);
     loadbutton->setText("load from");
-    loadbutton->move(4,240);
+    loadbutton->move(170,35);
     loadbutton->setMaximumWidth(80);
     connect(loadbutton, &QPushButton::clicked,this,&Paint::load);
     }
@@ -103,7 +110,7 @@ Paint::Paint(QWidget *parent) :QWidget(parent), ui(new Ui::Paint)
     {
     savebutton = new QPushButton(this);
     savebutton->setText("save to");
-    savebutton->move(4,180);
+    savebutton->move(170,5);
     savebutton->setMaximumWidth(80);
     connect(savebutton, &QPushButton::clicked,this, &Paint::save);
     }
@@ -111,8 +118,8 @@ Paint::Paint(QWidget *parent) :QWidget(parent), ui(new Ui::Paint)
     //Стёрка
     {
     eraserbutton = new QPushButton(this);
-    eraserbutton->setMaximumWidth(30);
-    eraserbutton->move(455,5);
+    eraserbutton->setMaximumWidth(50);
+    eraserbutton->move(600,5);
     connect(eraserbutton, &QPushButton::clicked,this, &Paint::eras);
     eraserbutton->setText("Стерка");
     }
@@ -122,7 +129,7 @@ Paint::Paint(QWidget *parent) :QWidget(parent), ui(new Ui::Paint)
     {
     redbutton = new QPushButton(this);
     redbutton->setMaximumWidth(20);
-    redbutton->move(95,5);
+    redbutton->move(257,5);
     connect(redbutton, &QPushButton::clicked,this, &Paint::red);
 
     redbutton->setStyleSheet(
@@ -141,7 +148,7 @@ Paint::Paint(QWidget *parent) :QWidget(parent), ui(new Ui::Paint)
         //Оранжевый
     {
     orangebutton = new QPushButton(this);
-    orangebutton->move(117,5);
+    orangebutton->move(278,5);
     orangebutton->setMaximumWidth(20);
     connect(orangebutton, &QPushButton::clicked,this, &Paint::orange);
     orangebutton->setStyleSheet(
@@ -161,7 +168,7 @@ Paint::Paint(QWidget *parent) :QWidget(parent), ui(new Ui::Paint)
     {
     yellowbutton = new QPushButton(this);
     connect(yellowbutton, &QPushButton::clicked,this, &Paint::yellow);
-    yellowbutton->move(139,5);
+    yellowbutton->move(299,5);
     yellowbutton->setMaximumWidth(20);
     yellowbutton->setStyleSheet(
                     "QPushButton{"
@@ -180,7 +187,7 @@ Paint::Paint(QWidget *parent) :QWidget(parent), ui(new Ui::Paint)
     {
     greenbutton = new QPushButton(this);
     connect(greenbutton, &QPushButton::clicked,this, &Paint::green);
-    greenbutton->move(161,5);
+    greenbutton->move(320,5);
     greenbutton->setMaximumWidth(20);
     greenbutton->setStyleSheet(
                     "QPushButton{"
@@ -199,7 +206,7 @@ Paint::Paint(QWidget *parent) :QWidget(parent), ui(new Ui::Paint)
     {
     lbluebutton = new QPushButton(this);
     connect(lbluebutton, &QPushButton::clicked,this, &Paint::lblue);
-    lbluebutton->move(183,5);
+    lbluebutton->move(341,5);
     lbluebutton->setMaximumWidth(20);
     lbluebutton->setStyleSheet(
                     "QPushButton{"
@@ -218,7 +225,7 @@ Paint::Paint(QWidget *parent) :QWidget(parent), ui(new Ui::Paint)
     {
     bluebutton = new QPushButton(this);
     connect(bluebutton, &QPushButton::clicked,this, &Paint::blue);
-    bluebutton->move(205,5);
+    bluebutton->move(362,5);
     bluebutton->setMaximumWidth(20);
     bluebutton->setStyleSheet(
                     "QPushButton{"
@@ -237,7 +244,7 @@ Paint::Paint(QWidget *parent) :QWidget(parent), ui(new Ui::Paint)
     {
     purpurebutton = new QPushButton(this);
     connect(purpurebutton, &QPushButton::clicked,this, &Paint::purpure);
-    purpurebutton->move(227,5);
+    purpurebutton->move(383,5);
     purpurebutton->setMaximumWidth(20);
     purpurebutton->setStyleSheet(
                     "QPushButton{"
@@ -256,7 +263,7 @@ Paint::Paint(QWidget *parent) :QWidget(parent), ui(new Ui::Paint)
     {
     greybutton = new QPushButton(this);
     connect(greybutton, &QPushButton::clicked,this, &Paint::grey);
-    greybutton->move(249,5);
+    greybutton->move(404,5);
     greybutton->setMaximumWidth(20);
     greybutton->setStyleSheet(
                     "QPushButton{"
@@ -275,7 +282,7 @@ Paint::Paint(QWidget *parent) :QWidget(parent), ui(new Ui::Paint)
     {
     blackbutton = new QPushButton(this);
     connect(blackbutton, &QPushButton::clicked,this, &Paint::black);
-    blackbutton->move(271,5);
+    blackbutton->move(425,5);
     blackbutton->setMaximumWidth(20);
     blackbutton->setStyleSheet(
                     "QPushButton{"
@@ -299,6 +306,9 @@ Paint::Paint(QWidget *parent) :QWidget(parent), ui(new Ui::Paint)
     timer = new QTimer();       // Инициализируем таймер
     connect(timer, &QTimer::timeout, this, &Paint::slotTimer);
     timer->start(50);          // Запускаем таймер
+
+    //QPainter painter(&(scene->image));
+
 }
 
 Paint::~Paint()
@@ -426,7 +436,7 @@ void Paint::save(){
 }
 void Paint::load(){
     QPixmap painter;
-    painter.load(specialline->text());
+    painter.load(loadline->text());
     scene->addPixmap(painter);
 
 }

@@ -14,7 +14,8 @@
 #include <QPainter>
 #include <QPen>
 #include <QColor>
-#include <QMouseEvent>
+#include <QMouseEvent>\
+
 
 
 #include <QLineEdit>
@@ -37,6 +38,8 @@ public:
     int lever = 0;
     int style=0;
 
+
+    //QImage image (width, height, QImage::Format_RGB32);
     explicit paintScene(QObject *parent = 0);
     ~paintScene();
 

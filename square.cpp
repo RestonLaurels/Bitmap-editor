@@ -16,7 +16,7 @@ Square::~Square()
 // Реализуем метод отрисовки
 void Square::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
-    painter->setPen(QPen(QBrush(color), 2));
+    painter->setPen(QPen(QBrush(color), 4));
 
     QRectF rect(endPoint().x() > startPoint().x() ? startPoint().x() : endPoint().x(),
                 endPoint().y() > startPoint().y() ? startPoint().y() : endPoint().y(),

@@ -46,6 +46,7 @@ public:
     QPushButton *eraserbutton;
 
     QLineEdit *specialline;
+    QLineEdit *loadline;
 
     QSpinBox *redgrad;
     QSpinBox *bluegrad;

@@ -37,7 +37,7 @@ void paintScene::setTypeFigure(const int type)
 void paintScene::filling(int x, int y, QColor specialcolor,QColor color, QImage *image)
 {
 
-    if (color!=specialcolor) return;//если цвет, которым мы закрашиваем совпадает с тем, который сейчас установлен, то уходим
+    if (color==specialcolor) return;//если цвет, которым мы закрашиваем совпадает с тем, который сейчас установлен, то уходим
 
 
     if ((x>=0)&&(y>=0)){ //если мы находимся в картине
@@ -108,8 +108,8 @@ void paintScene::filling(int x, int y, QRgb oldColor,QRgb newColor, QImage & img
             }
     return;
 }
-
 */
+
 void paintScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
 
@@ -141,18 +141,13 @@ void paintScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
                 painter.setRenderHint(QPainter::Antialiasing);
 
                 render(&painter);
-                //запомнили цвет пикселя на котором стоим
+                //запоминаем цвет пикселя на котором стоим
                 specialcol = QColor(image.pixel(x,y));
                 //color=specialcol;
                 //переходим к циклу закрашивания
                 //paintScene::filling(x,y,specialcol.rgb(),color.rgb(), image);
                 paintScene::filling(x,y,specialcol,color, &image);
 
-                //x,y -мышка, цвет который закрашиваеем, цвет которым мы закрашиваем, указатель на картину
-                //drawImage(0, 0, image);
-                //addPixmap(image);
-                //addPixmap(image);
-                //QPainter().drawImage(0, 0, image);
             break;
 
         }

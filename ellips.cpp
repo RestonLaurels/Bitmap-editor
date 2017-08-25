@@ -16,7 +16,7 @@ ellips::~ellips()
 void ellips::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
 
-    painter->setPen(QPen(QBrush(color), 2));
+    painter->setPen(QPen(QBrush(color), 4));
 
     QRectF ellip(endPoint().x() > startPoint().x() ? startPoint().x() : endPoint().x(),
                 endPoint().y() > startPoint().y() ? startPoint().y() : endPoint().y(),
