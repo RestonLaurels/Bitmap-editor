@@ -12,7 +12,7 @@ class Figure : public QObject, public QGraphicsItem
     Q_PROPERTY(QPointF startPoint
                READ startPoint WRITE setStartPoint
                NOTIFY pointChanged)
-    // Свойство конечно точки, до куда отрисовываем фигуру
+    // Свойство конечной точки, до куда отрисовываем фигуру
     Q_PROPERTY(QPointF endPoint
                READ endPoint WRITE setEndPoint
                NOTIFY pointChanged)

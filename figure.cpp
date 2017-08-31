@@ -7,9 +7,7 @@ Figure::Figure(QPointF point, QObject *parent) :
     // Устанавливаем стартовую координату для отрисовки фигуры
     this->setStartPoint(mapFromScene(point));
     this->setEndPoint(mapFromScene(point));
-    /* Подключаем сигнал изменения координат к слоту запуска обновления содержимого объекта
-     * Сигнал и слот присутствуют в базовом классе
-     * */
+    // Подключаем сигнал изменения координат к слоту запуска обновления содержимого объекта
     connect(this, &Figure::pointChanged, this, &Figure::updateRomb);
 }
 
@@ -21,8 +19,8 @@ Figure::~Figure()
 QRectF Figure::boundingRect() const
 {
     /* Возвращаем область, в которой лежит фигура.
-     * Обновляемая область зависит от стартовой точки отрисовки и от конечной точки
-     * */
+      Обновляемая область зависит от стартовой точки отрисовки и от конечной точки
+     */
     return QRectF((endPoint().x() > startPoint().x() ? startPoint().x() : endPoint().x()) - 5,
                   (endPoint().y() > startPoint().y() ? startPoint().y() : endPoint().y()) - 5,
                   qAbs(endPoint().x() - startPoint().x()) + 10,

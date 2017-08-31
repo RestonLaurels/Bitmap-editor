@@ -31,21 +31,24 @@ class paintScene : public QGraphicsScene
 public:
 
     //QColor p;
-    QColor color;
+    QColor color=Qt::blue;
     QColor specialcol;
     int transparency=255;
     double r = 0.5;
     int lever = 0;
     int style=0;
 
+    //int deep = 0;
+    int maxdeep = 3;
 
-    //QImage image (width, height, QImage::Format_RGB32);
+    //QImage image;
+    //QPainter painter;
+
     explicit paintScene(QObject *parent = 0);
     ~paintScene();
 
-    void filling(int x, int y, QColor specialcol,QColor color,QImage *image);
-    //void filling(int x, int y, QRgb oldcolor,QRgb newcolor, QImage & image);
-    //void Fill2(QRgb oldColor, QRgb newColor, int x, int y);
+    void filling(int x, int y, QColor specialcol,QColor color,QImage *image, QPainter *painter, int deep);
+
 
     int typeFigure() const;                 // Возвращение текщего типа
     void setTypeFigure(const int type);     // Установка текущего типа
@@ -55,7 +58,8 @@ public:
         SquareType,
         RombType,
         TriangleType,
-        EllipsType
+        EllipsType,
+        LineType
     };
 signals:
     void typeFigureChanged();

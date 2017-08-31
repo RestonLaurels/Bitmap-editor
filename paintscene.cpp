@@ -12,6 +12,7 @@
 #include "triangle.h"
 #include "square.h"
 #include "ellips.h"
+#include "line.h"
 
 paintScene::paintScene(QObject *parent) : QGraphicsScene(parent)
 {
@@ -34,81 +35,97 @@ void paintScene::setTypeFigure(const int type)
 }
 
 
-void paintScene::filling(int x, int y, QColor specialcolor,QColor color, QImage *image)
+void paintScene::filling(int x, int y, QColor specialcolor,QColor color, QImage *image, QPainter *painter, int deep)
 {
 
-    if (color==specialcolor) return;//если цвет, которым мы закрашиваем совпадает с тем, который сейчас установлен, то уходим
+    int right_x=0,left_x=0;
 
 
-    if ((x>=0)&&(y>=0)){ //если мы находимся в картине
-        if (QColor((*image).pixel(x,y)) == specialcolor){ //совпадение спеццвета с тем, на котором мы сейчас находимся
-            //теперь красим
-            addLine(x,y,x,y,
-                    QPen(QBrush(color),1,Qt::SolidLine,Qt::RoundCap));
-            //перемащее влево
-            filling(x-1,y,specialcolor,color,image);
-            //перемещение вверх
-            //filling(x,y-1,specialcolor,color,image);
-            //перемещение вправо
-            //filling(x+1,y,specialcolor,color,image);
-            //перемещение вниз
-            //filling(x,y+1,specialcolor,color,image);
-            return;
+    int up_remlastrx=0;
+    int up_remlastlx=0;
+    int up_remlasty=0;
+
+    int down_remlastrx=0;
+    int down_remlastlx=0;
+    int down_remlasty=0;
+    int uy;
+    int dy;
+
+
+    if (deep >= maxdeep) return; // если мы открыли уже слишком много циклов
+    /*
+    if(QColor((*image).pixel(x,y)) == specialcolor)//если именно эту область нужно закрашивать
+    {
+        for (int nowx=x;(QColor((*image).pixel(nowx,y)) == specialcolor); nowx++) {
+            right_x=nowx;
         }
-        else return;
+        for (int nowx=x;(QColor((*image).pixel(nowx,y)) == specialcolor); nowx--) {
+            left_x=nowx;
+        }
+        addLine(right_x,y,left_x,y,
+            QPen(QBrush(color),1,Qt::SolidLine,Qt::RoundCap));
+        render(painter);
     }
+    if((QColor((*image).pixel(x,y)) == specialcolor)||(QColor((*image).pixel(x,y)) == color)){
+        filling( x,  y+1,  specialcolor, color, image, painter,deep+1);
+        //filling( x,  y-1,  specialcolor, color, image, painter,deep+1);
+        //filling( x+1,  y,  specialcolor, color, image, painter,deep+1);
+        //filling( x-1,  y,  specialcolor, color, image, painter,deep+1);
+    }
+    */
 
-    return;
-}
+    for (int up_y=y;(QColor((*image).pixel(x,up_y)) == specialcolor);up_y--)
+    {
+            if(QColor((*image).pixel(x,up_y)) == color) break;
+            // если цвет заливкии и тот, который закрашиваем совпадают, то уходим
 
-
-/*
-void paintScene::filling(int x, int y, QRgb oldColor,QRgb newColor, QImage & img)
-{
-            if (oldColor == newColor) return;
-
-            QStack<QPoint> stk;
-            QPoint pt;
-
-            int y1;
-            bool spanLeft, spanRight;
-
-            stk.push(QPoint(x, y));
-            addEllipse(x,y,r*2, r*2, QPen(Qt::NoPen), QBrush(color));
-            while (!stk.empty()) {
-                pt = stk.pop();
-                x = pt.x();
-                y = pt.y();
-
-                y1 = y;
-                while (y1 >= 0 && img.pixel(x, y1) == oldColor) y1--;
-                y1++;
-
-                spanLeft = spanRight = false;
-                while (y1 < img.height() && img.pixel(x, y1) == oldColor) {
-                    //img.setPixel(x, y1, newColor);
-                    //addLine(x,y,x,y,QPen(QBrush(color),1,Qt::SolidLine,Qt::RoundCap));
-
-                    //addEllipse(x,y,r*2, r*2, QPen(Qt::NoPen), QBrush(color));
-                    //
-                    if (!spanLeft && x > 0 && img.pixel(x-1, y1) == oldColor) {
-                        stk.push(QPoint(x-1, y1));
-                        spanLeft = true;
-                    } else if(spanLeft && x > 0 && img.pixel(x-1, y1) != oldColor) {
-                        spanLeft = false;
-                    }
-                    if (!spanRight && x < (img.width() - 1) && img.pixel(x+1, y1) == oldColor) {
-                        stk.push(QPoint(x+1, y1));
-                        spanRight = true;
-                    } else if(spanRight && (x < img.width() - 1) && img.pixel(x+1, y1) != oldColor) {
-                        spanRight = false;
-                    }
-                    y1++;
-                }
+            for (int nowx=x;(QColor((*image).pixel(nowx,up_y)) == specialcolor); nowx++) {
+                right_x=nowx;
             }
+            for (int nowx=x;(QColor((*image).pixel(nowx,up_y)) == specialcolor); nowx--) {
+                left_x=nowx;
+            }
+
+            addLine(right_x,up_y,left_x,up_y,
+                QPen(QBrush(color),1,Qt::SolidLine,Qt::RoundCap));
+            uy=up_y;
+            //render(painter);
+
+    }
+    up_remlasty = uy;
+    up_remlastlx = left_x;
+    up_remlastrx = right_x;
+
+
+    for (int down_y=y;(QColor((*image).pixel(x,down_y)) == specialcolor);down_y++)
+    {
+            if(QColor((*image).pixel(x,down_y)) == color) break;
+            // если цвет карандаша и тот,который закрашиваем совпадают, то уходим
+            for (int nowx=x;(QColor((*image).pixel(nowx,down_y)) == specialcolor); nowx++){
+                right_x=nowx;
+            }
+            for (int nowx=x;(QColor((*image).pixel(nowx,down_y)) == specialcolor); nowx--){
+                left_x=nowx;
+            }
+            down_remlasty = down_y;
+            down_remlastlx = left_x;
+            down_remlastrx = right_x;
+
+            addLine(right_x,down_y,left_x,down_y,
+                QPen(QBrush(color),1,Qt::SolidLine,Qt::RoundCap));
+            dy=down_y;
+            //render(painter);
+    }
+    down_remlasty = dy;
+    down_remlastlx = left_x;
+    down_remlastrx = right_x;
+
+    filling( (up_remlastrx   +   up_remlastlx)/2,  up_remlasty,    specialcolor, color, image, painter,deep+1);
+    filling( (down_remlastrx + down_remlastlx)/2,  down_remlasty,  specialcolor, color, image, painter,deep+1);
+
     return;
 }
-*/
+
 
 void paintScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
@@ -117,7 +134,7 @@ void paintScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
         case 0:
         {
         // При нажатии кнопки мыши отрисовываем эллипс
-            //r = paint.inputA->value();
+
             addEllipse(event->scenePos().x() - r,
                         event->scenePos().y() - r,
                         r*2,
@@ -130,23 +147,17 @@ void paintScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
         }
         case 1:
         {
-                double x = event->scenePos().x(),
+           double x = event->scenePos().x(),
                        y = event->scenePos().y();
-                QImage image(width(), height(), QImage::Format_RGB32);
+           QImage image(width(), height(), QImage::Format_ARGB32_Premultiplied);
+           QPainter painter(&image);
+           QColor specialcol;
 
-                QPainter painter(&image);
-                QColor specialcol;
-
-
-                painter.setRenderHint(QPainter::Antialiasing);
-
-                render(&painter);
-                //запоминаем цвет пикселя на котором стоим
-                specialcol = QColor(image.pixel(x,y));
-                //color=specialcol;
-                //переходим к циклу закрашивания
-                //paintScene::filling(x,y,specialcol.rgb(),color.rgb(), image);
-                paintScene::filling(x,y,specialcol,color, &image);
+           //painter.setRenderHint(QPainter::Antialiasing);
+           render(&painter);
+                //запоминаем цвет пикселя на котором стоим, чтобы знать какой цвет закрашива
+           specialcol = image.pixel(x,y);
+           paintScene::filling(event->scenePos().x(),event->scenePos().y(),specialcol,color, &image, &painter,0);
 
             break;
 
@@ -158,15 +169,13 @@ void paintScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
                 Square *item = new Square(event->scenePos());
                 item->color=color;
                 item->setPos(event->pos());
-
                 tempFigure = item;
                 break;
             }
-            case RombType: {
+            case RombType:{
                 Romb *item = new Romb(event->scenePos());
                 item->color=color;
                 item->setPos(event->pos());
-
                 tempFigure = item;
                 break;
             }
@@ -174,18 +183,24 @@ void paintScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
                 Triangle *item = new Triangle(event->scenePos());
                 item->color=color;
                 item->setPos(event->pos());
-
                 tempFigure = item;
                 break;
             }
-
             case EllipsType:{
                 ellips *item = new ellips(event->scenePos());
                 item->color=color;
                 item->setPos(event->pos());
-
                 tempFigure = item;
                 break;
+            }
+            case LineType:{
+                line *item = new line(event->scenePos());
+                item->color=color;
+                item->setPos(event->pos());
+                tempFigure = item;
+                break;
+
+
             }
             }
             this->addItem(tempFigure);
@@ -209,7 +224,9 @@ void paintScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
         previousPoint = event->scenePos();
         break;
         }
-        case 1:
+        case 1:{
+            break;
+        }
         case 2:{
             /* Устанавливаем конечную координату положения мыши
             * в текущую отрисовываемую фигуру

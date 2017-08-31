@@ -18,6 +18,10 @@ Paint::Paint(QWidget *parent) :QWidget(parent), ui(new Ui::Paint)
     rombbutton->move(255, 35);
     connect(rombbutton, &QPushButton::clicked,this, &Paint::romb);
 
+    deepbutton = new QSpinBox (this);
+    deepbutton->setMaximumWidth(45);
+    deepbutton->setValue(3);
+    deepbutton->move(0,250);
 
     trianglebutton = new QPushButton(this);
     trianglebutton->setMaximumWidth(45);
@@ -32,12 +36,18 @@ Paint::Paint(QWidget *parent) :QWidget(parent), ui(new Ui::Paint)
     ellipsbutton->move(345, 35);
     connect(ellipsbutton, &QPushButton::clicked,this, &Paint::ellips);
 
-
     squarebutton = new QPushButton (this);
-    squarebutton->setMaximumWidth(57);
+    squarebutton->setMaximumWidth (45);
     squarebutton->setText("Square");
     squarebutton->move(390, 35);
     connect(squarebutton, &QPushButton::clicked,this, &Paint::square);
+
+    linebutton = new QPushButton (this);
+    linebutton ->setMaximumWidth((45));
+    linebutton->setText("Line");
+    linebutton->move(435,35);
+    connect(linebutton, &QPushButton::clicked,this, &Paint::line);
+
 
     button = new QPushButton(this);
     button->setMaximumWidth(70);
@@ -50,6 +60,13 @@ Paint::Paint(QWidget *parent) :QWidget(parent), ui(new Ui::Paint)
     fillbutton->move(0, 130);
     fillbutton->setMaximumWidth(70);
     connect(fillbutton, &QPushButton::clicked,this, &Paint::fill);
+
+    delebutton = new QPushButton(this);
+    delebutton->setText(("Очистить"));
+    delebutton->move(0,180);
+    delebutton->setMaximumWidth(70);
+    connect(delebutton,&QPushButton::clicked,this, &Paint::dele);
+
 
     //толщина маркера
     inputA = new QDoubleSpinBox(this);
@@ -299,6 +316,7 @@ Paint::Paint(QWidget *parent) :QWidget(parent), ui(new Ui::Paint)
     }
     }
     ui->setupUi(this);
+
     scene = new paintScene();       // Инициализируем графическую сцену
 
     ui->graphicsView->setScene(scene);  // Устанавливаем графическую сцену
@@ -320,7 +338,7 @@ void Paint::slotTimer()
 {
     // Переопределяем размеры графической сцены в зависимости от размеров окна
     timer->stop();
-    scene->setSceneRect(15,15, ui->graphicsView->width()-20, ui->graphicsView->height()-20);
+    scene->setSceneRect(0,0, ui->graphicsView->width()-20, ui->graphicsView->height()-20);
 }
 void Paint::resizeEvent(QResizeEvent *event)
 {
@@ -336,8 +354,29 @@ void Paint::pencil()
 
 void Paint::fill()
 {
+    scene->maxdeep = deepbutton->value();
     scene->style=1;
+    //scene->image = QImage(scene->width(),scene->height(),QImage::Format_RGB32);
+
+    //scene->painter = QPainter(&scene->image);
+
+    //scene->painter.setRenderHint(QPainter::Antialiasing);
+
     scene->r=inputA->value();
+}
+
+void Paint::dele()
+{
+    //delete scene;
+
+    //ui->graphicsView->
+    scene = new paintScene();       // Инициализируем графическую сцену
+
+    ui->graphicsView->setScene(scene);  // Устанавливаем графическую сцену
+    //autoFillBackground : 1;
+    timer = new QTimer();       // Инициализируем таймер
+    connect(timer, &QTimer::timeout, this, &Paint::slotTimer);
+    timer->start(50);          // Запускаем таймер
 }
 
 void Paint::red()
@@ -465,5 +504,10 @@ void Paint::romb(){
 
 }
 
+void Paint::line(){
+    scene->style = 2;
+    scene->setTypeFigure(paintScene::LineType);
+    scene->r=inputA->value();
 
+}
 

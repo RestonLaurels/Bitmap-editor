@@ -43,7 +43,11 @@ public:
     QPushButton *savebutton;
     QPushButton *loadbutton;
 
+    QPushButton *delebutton;
+
     QPushButton *eraserbutton;
+
+    QSpinBox *deepbutton;
 
     QLineEdit *specialline;
     QLineEdit *loadline;
@@ -57,6 +61,7 @@ public:
     QPushButton *rombbutton;
     QPushButton *squarebutton;
     QPushButton *ellipsbutton;
+    QPushButton *linebutton;
 
 
 
@@ -69,6 +74,7 @@ public:
     void square();
     void ellips();
     void triangle();
+    void line();
 
 
     void pencil();
@@ -84,6 +90,8 @@ public:
     void green();
     void yellow();
 
+    void dele();
+
     void eras();
     void hardcolor();
 
@@ -91,6 +99,8 @@ public:
 
     void save();
     void load();
+
+    void deep();
 private:
     Ui::Paint *ui;
     QTimer *timer;      // Определяем таймер для подготовки актуальных размеро граф. сцены
