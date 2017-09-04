@@ -14,6 +14,18 @@
 #include "ellips.h"
 #include "line.h"
 
+struct rem_l{
+    int new_lx, old_lx;
+    int y;
+
+};
+struct rem_r{
+   int new_rx, old_rx;
+   int y;
+
+};
+
+
 paintScene::paintScene(QObject *parent) : QGraphicsScene(parent)
 {
 
@@ -38,41 +50,28 @@ void paintScene::setTypeFigure(const int type)
 void paintScene::filling(int x, int y, QColor specialcolor,QColor color, QImage *image, QPainter *painter, int deep)
 {
 
-    int right_x=0,left_x=0;
+    int right_x=x,left_x=x;
+    int right_pred_x=x,left_pred_x=x;
 
 
     int up_remlastrx=0;
     int up_remlastlx=0;
     int up_remlasty=0;
-
     int down_remlastrx=0;
     int down_remlastlx=0;
     int down_remlasty=0;
     int uy;
     int dy;
-
-
-    if (deep >= maxdeep) return; // если мы открыли уже слишком много циклов
-    /*
-    if(QColor((*image).pixel(x,y)) == specialcolor)//если именно эту область нужно закрашивать
-    {
-        for (int nowx=x;(QColor((*image).pixel(nowx,y)) == specialcolor); nowx++) {
-            right_x=nowx;
-        }
-        for (int nowx=x;(QColor((*image).pixel(nowx,y)) == specialcolor); nowx--) {
-            left_x=nowx;
-        }
-        addLine(right_x,y,left_x,y,
-            QPen(QBrush(color),1,Qt::SolidLine,Qt::RoundCap));
-        render(painter);
-    }
-    if((QColor((*image).pixel(x,y)) == specialcolor)||(QColor((*image).pixel(x,y)) == color)){
-        filling( x,  y+1,  specialcolor, color, image, painter,deep+1);
-        //filling( x,  y-1,  specialcolor, color, image, painter,deep+1);
-        //filling( x+1,  y,  specialcolor, color, image, painter,deep+1);
-        //filling( x-1,  y,  specialcolor, color, image, painter,deep+1);
-    }
+    /* переменные для запоминания областей особой закраски
+    *  где разница между новым и старыми левыми и правыми x  будет больше какого-то числа
     */
+    rem_l reml[10];
+    rem_r remr[10];
+
+    int numberl=0;
+    int numberr=0;
+
+    if (deep >= maxdeep) return; // если мы уже слишком глубоко
 
     for (int up_y=y;(QColor((*image).pixel(x,up_y)) == specialcolor);up_y--)
     {
@@ -82,13 +81,32 @@ void paintScene::filling(int x, int y, QColor specialcolor,QColor color, QImage 
             for (int nowx=x;(QColor((*image).pixel(nowx,up_y)) == specialcolor); nowx++) {
                 right_x=nowx;
             }
+            if (abs(right_x-right_pred_x)>15){
+                remr[numberr].new_rx=right_x;
+                remr[numberr].old_rx=right_pred_x;
+                remr[numberr].y=up_y;
+                ++numberr;
+            }
+
             for (int nowx=x;(QColor((*image).pixel(nowx,up_y)) == specialcolor); nowx--) {
                 left_x=nowx;
             }
+            if (abs(left_x-left_pred_x)>15){
+                reml[numberl].new_lx=left_x;
+                reml[numberl].old_lx=left_pred_x;
+                reml[numberl].y=up_y;
+                ++numberl;
+            }
+
 
             addLine(right_x,up_y,left_x,up_y,
                 QPen(QBrush(color),1,Qt::SolidLine,Qt::RoundCap));
+
+            right_pred_x=right_x;
+            left_pred_x=left_x;
             uy=up_y;
+
+
             //render(painter);
 
     }
@@ -96,7 +114,8 @@ void paintScene::filling(int x, int y, QColor specialcolor,QColor color, QImage 
     up_remlastlx = left_x;
     up_remlastrx = right_x;
 
-
+    right_pred_x=x,
+    left_pred_x=x;
     for (int down_y=y;(QColor((*image).pixel(x,down_y)) == specialcolor);down_y++)
     {
             if(QColor((*image).pixel(x,down_y)) == color) break;
@@ -104,21 +123,49 @@ void paintScene::filling(int x, int y, QColor specialcolor,QColor color, QImage 
             for (int nowx=x;(QColor((*image).pixel(nowx,down_y)) == specialcolor); nowx++){
                 right_x=nowx;
             }
+
+            if (abs(right_x-right_pred_x)>15){
+                remr[numberr].new_rx=right_x;
+                remr[numberr].old_rx=right_pred_x;
+                remr[numberr].y=down_y;
+                ++numberr;
+            }
+
             for (int nowx=x;(QColor((*image).pixel(nowx,down_y)) == specialcolor); nowx--){
                 left_x=nowx;
             }
-            down_remlasty = down_y;
-            down_remlastlx = left_x;
-            down_remlastrx = right_x;
+
+            if (abs(left_x-left_pred_x)>15){
+                reml[numberl].new_lx=left_x;
+                reml[numberl].old_lx=left_pred_x;
+                reml[numberl].y=down_y;
+                ++numberl;
+            }
 
             addLine(right_x,down_y,left_x,down_y,
                 QPen(QBrush(color),1,Qt::SolidLine,Qt::RoundCap));
+
+
+            right_pred_x=right_x;
+            left_pred_x=left_x;
             dy=down_y;
             //render(painter);
     }
     down_remlasty = dy;
     down_remlastlx = left_x;
     down_remlastrx = right_x;
+
+
+
+    for (int i=1; i<numberl;++i)
+    {
+        filling( (reml[i].new_lx+reml[i].old_lx)/2,  reml[i].y,    specialcolor, color, image, painter,deep+1);
+    }
+
+    for (int j=1; j<numberr;++j)
+    {
+        filling( (remr[j].new_rx+remr[j].old_rx)/2,  remr[j].y,   specialcolor, color, image, painter,deep+1);
+    }
 
     filling( (up_remlastrx   +   up_remlastlx)/2,  up_remlasty,    specialcolor, color, image, painter,deep+1);
     filling( (down_remlastrx + down_remlastlx)/2,  down_remlasty,  specialcolor, color, image, painter,deep+1);
@@ -188,6 +235,7 @@ void paintScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
             }
             case EllipsType:{
                 ellips *item = new ellips(event->scenePos());
+
                 item->color=color;
                 item->setPos(event->pos());
                 tempFigure = item;

@@ -74,6 +74,9 @@ Paint::Paint(QWidget *parent) :QWidget(parent), ui(new Ui::Paint)
     inputA->setMaximumWidth(50);
     inputA->setMaximum(50.0);
     inputA->setMinimum(0.5);
+    //connect(inputA,&QDoubleSpinBox::valueChanged,this, &Paint::thick);
+
+
     //
     //линия для загрузки и сохранения
     specialline = new QLineEdit(this);
@@ -324,7 +327,7 @@ Paint::Paint(QWidget *parent) :QWidget(parent), ui(new Ui::Paint)
     timer = new QTimer();       // Инициализируем таймер
     connect(timer, &QTimer::timeout, this, &Paint::slotTimer);
     timer->start(50);          // Запускаем таймер
-
+    scene->r=inputA->value();
     //QPainter painter(&(scene->image));
 
 }
@@ -338,7 +341,7 @@ void Paint::slotTimer()
 {
     // Переопределяем размеры графической сцены в зависимости от размеров окна
     timer->stop();
-    scene->setSceneRect(0,0, ui->graphicsView->width()-20, ui->graphicsView->height()-20);
+    scene->setSceneRect(0,0, ui->graphicsView->width()-10, ui->graphicsView->height()-10);
 }
 void Paint::resizeEvent(QResizeEvent *event)
 {
@@ -351,7 +354,10 @@ void Paint::pencil()
     scene->r=a;
     scene->style=0;
 }
+void Paint::thick(){
 
+    scene->r = inputA->value();
+}
 void Paint::fill()
 {
     scene->maxdeep = deepbutton->value();

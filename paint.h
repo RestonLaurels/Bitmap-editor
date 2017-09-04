@@ -75,6 +75,7 @@ public:
     void ellips();
     void triangle();
     void line();
+    void thick();
 
 
     void pencil();

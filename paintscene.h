@@ -38,7 +38,7 @@ public:
     int lever = 0;
     int style=0;
 
-    //int deep = 0;
+    int deep = 0;
     int maxdeep = 3;
 
     //QImage image;
