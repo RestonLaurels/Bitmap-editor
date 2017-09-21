@@ -52,7 +52,8 @@ void paintScene::filling(int x, int y, QColor specialcolor,QColor color, QImage 
 
     int right_x=x,left_x=x;
     int right_pred_x=x,left_pred_x=x;
-
+    QColor col;
+    col.setRgb(255,255,255,255);
 
     int up_remlastrx=0;
     int up_remlastlx=0;
@@ -63,7 +64,7 @@ void paintScene::filling(int x, int y, QColor specialcolor,QColor color, QImage 
     int uy;
     int dy;
     /* переменные для запоминания областей особой закраски
-    *  где разница между новым и старыми левыми и правыми x  будет больше какого-то числа
+       где разница между новым и старыми левыми и правыми x  будет больше какого-то числа
     */
     rem_l reml[10];
     rem_r remr[10];
@@ -73,12 +74,12 @@ void paintScene::filling(int x, int y, QColor specialcolor,QColor color, QImage 
 
     if (deep >= maxdeep) return; // если мы уже слишком глубоко
 
-    for (int up_y=y;(QColor((*image).pixel(x,up_y)) == specialcolor);up_y--)
+    for (int up_y=y;(QColor((*image).pixel(x,up_y)) == specialcolor)||(QColor((*image).pixel(x,up_y)) == col );up_y--)
     {
             if(QColor((*image).pixel(x,up_y)) == color) break;
             // если цвет заливкии и тот, который закрашиваем совпадают, то уходим
 
-            for (int nowx=x;(QColor((*image).pixel(nowx,up_y)) == specialcolor); nowx++) {
+            for (int nowx=x;((QColor((*image).pixel(nowx,up_y)) == specialcolor)||(QColor((*image).pixel(nowx,up_y)) == col )); nowx++) {
                 right_x=nowx;
             }
             if (abs(right_x-right_pred_x)>15){
@@ -88,7 +89,7 @@ void paintScene::filling(int x, int y, QColor specialcolor,QColor color, QImage 
                 ++numberr;
             }
 
-            for (int nowx=x;(QColor((*image).pixel(nowx,up_y)) == specialcolor); nowx--) {
+            for (int nowx=x;((QColor((*image).pixel(nowx,up_y)) == specialcolor)||(QColor((*image).pixel(nowx,up_y)) == col )); nowx--) {
                 left_x=nowx;
             }
             if (abs(left_x-left_pred_x)>15){
@@ -116,11 +117,11 @@ void paintScene::filling(int x, int y, QColor specialcolor,QColor color, QImage 
 
     right_pred_x=x,
     left_pred_x=x;
-    for (int down_y=y;(QColor((*image).pixel(x,down_y)) == specialcolor);down_y++)
+    for (int down_y=y;((QColor((*image).pixel(x,down_y)) == specialcolor)||(QColor((*image).pixel(x,down_y)) == col));down_y++)
     {
             if(QColor((*image).pixel(x,down_y)) == color) break;
             // если цвет карандаша и тот,который закрашиваем совпадают, то уходим
-            for (int nowx=x;(QColor((*image).pixel(nowx,down_y)) == specialcolor); nowx++){
+            for (int nowx=x;((QColor((*image).pixel(nowx,down_y)) == specialcolor)||(QColor((*image).pixel(nowx,down_y)) == col)); nowx++){
                 right_x=nowx;
             }
 
@@ -131,7 +132,7 @@ void paintScene::filling(int x, int y, QColor specialcolor,QColor color, QImage 
                 ++numberr;
             }
 
-            for (int nowx=x;(QColor((*image).pixel(nowx,down_y)) == specialcolor); nowx--){
+            for (int nowx=x;((QColor((*image).pixel(nowx,down_y)) == specialcolor)||(QColor((*image).pixel(nowx,down_y)) == col)); nowx--){
                 left_x=nowx;
             }
 
@@ -277,8 +278,8 @@ void paintScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
         }
         case 2:{
             /* Устанавливаем конечную координату положения мыши
-            * в текущую отрисовываемую фигуру
-            * */
+             в текущую отрисовываемую фигуру
+            */
             tempFigure->setEndPoint(event->scenePos());
             // Обновляем содержимое сцены, необходимо для устранения артефактов при отрисовке фигур
 

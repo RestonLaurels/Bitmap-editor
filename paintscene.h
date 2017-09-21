@@ -39,7 +39,7 @@ public:
     int style=0;
 
     int deep = 0;
-    int maxdeep = 3;
+    int maxdeep = 7;
 
     //QImage image;
     //QPainter painter;

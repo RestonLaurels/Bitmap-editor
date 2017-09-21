@@ -30,6 +30,7 @@ public:
 
     QPushButton *fillbutton;
 
+
     QPushButton *redbutton;
     QPushButton *orangebutton;
     QPushButton *yellowbutton;
@@ -48,7 +49,7 @@ public:
     QPushButton *eraserbutton;
 
     QSpinBox *deepbutton;
-
+    QLabel   *textbutton;
     QLineEdit *specialline;
     QLineEdit *loadline;
 

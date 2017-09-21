@@ -20,8 +20,13 @@ Paint::Paint(QWidget *parent) :QWidget(parent), ui(new Ui::Paint)
 
     deepbutton = new QSpinBox (this);
     deepbutton->setMaximumWidth(45);
-    deepbutton->setValue(3);
-    deepbutton->move(0,250);
+    deepbutton->setValue(5);
+    deepbutton->move(5,250);
+
+    textbutton = new QLabel(this);
+    textbutton->move(2, 280);
+    textbutton->setText("Maxdeep");
+
 
     trianglebutton = new QPushButton(this);
     trianglebutton->setMaximumWidth(45);
@@ -51,19 +56,19 @@ Paint::Paint(QWidget *parent) :QWidget(parent), ui(new Ui::Paint)
 
     button = new QPushButton(this);
     button->setMaximumWidth(70);
-    button->setText("Кисть");
-    button->move(0, 100); // Координаты относительно виджета, в который вложен button.
+    button->setText("brush");
+    button->move(0, 100);
     connect(button, &QPushButton::clicked,this, &Paint::pencil);
 
     fillbutton = new QPushButton(this);
-    fillbutton->setText("Заливка");
+    fillbutton->setText("Filing");
     fillbutton->move(0, 130);
     fillbutton->setMaximumWidth(70);
     connect(fillbutton, &QPushButton::clicked,this, &Paint::fill);
 
     delebutton = new QPushButton(this);
-    delebutton->setText(("Очистить"));
-    delebutton->move(0,180);
+    delebutton->setText(("Clear screen"));
+    delebutton->move(0,210);
     delebutton->setMaximumWidth(70);
     connect(delebutton,&QPushButton::clicked,this, &Paint::dele);
 
@@ -74,10 +79,8 @@ Paint::Paint(QWidget *parent) :QWidget(parent), ui(new Ui::Paint)
     inputA->setMaximumWidth(50);
     inputA->setMaximum(50.0);
     inputA->setMinimum(0.5);
-    //connect(inputA,&QDoubleSpinBox::valueChanged,this, &Paint::thick);
+    inputA->setValue(9.50);
 
-
-    //
     //линия для загрузки и сохранения
     specialline = new QLineEdit(this);
     specialline->move(5,5);
@@ -138,10 +141,10 @@ Paint::Paint(QWidget *parent) :QWidget(parent), ui(new Ui::Paint)
     //Стёрка
     {
     eraserbutton = new QPushButton(this);
-    eraserbutton->setMaximumWidth(50);
-    eraserbutton->move(600,5);
+    eraserbutton->setMaximumWidth(70);
+    eraserbutton->move(0,160);
     connect(eraserbutton, &QPushButton::clicked,this, &Paint::eras);
-    eraserbutton->setText("Стерка");
+    eraserbutton->setText("Eraser");
     }
 
     {
@@ -443,6 +446,7 @@ void Paint::grey()
 void Paint::eras()
 {
     scene->lever = 0;
+    scene->style=0;
     scene->r = inputA->value()*1.5+4;
     scene->color.setRgb(255,255,255,scene->transparency);
 }
